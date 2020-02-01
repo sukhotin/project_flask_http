@@ -1,9 +1,14 @@
 pipeline {
+    environment {
+        registry = "sukhotin/project_flask_http"
+        registryCredential = "dockerhub"
+        dockerImage = ""
+    }
     agent any 
     stages {
         stage('Build') { 
             steps {
-                sh("echo build")
+                dockerImage = docker.build(registry)
             }
         }
         stage('Test') { 
