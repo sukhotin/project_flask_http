@@ -1,15 +1,16 @@
-def dockerImage = ""
 pipeline {
     environment {
         registry = "sukhotin/project_flask_http"
         registryCredential = "dockerhub"
-
+        dockerImage = ""
     }
     agent any 
     stages {
         stage('Build') {
             steps {
-                dockerImage = docker.build(registry)
+                script {
+                    dockerImage = docker.build(registry)
+                }
             }            
         }
         stage('Test') { 
