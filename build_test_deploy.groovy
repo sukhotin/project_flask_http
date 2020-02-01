@@ -9,14 +9,16 @@ pipeline {
         stage('Build docker image') {
             steps {
                 script {
-                    dockerImage = docker.build("${registry}:${env.BUILD_ID}")
+                    dockerImage = docker.build(registry)
                 }
             }            
         }
         stage('Test image') { 
             steps {
                 script {
-                    dockerImage.image(registry).withRun("")
+                    docker.image(registry).withRun('-p 8080:80') {c ->
+                        sh "curl -i http://${hostIp(c)}:8080/"
+                    }
                 }
             }
         }
