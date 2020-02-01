@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     docker.image(registry).withRun('-p 8080:80') {c ->
-                        sh "curl -i http://${hostIp(c)}:8080/"
+                        sh "curl -i http://localhost:8080/"
                     }
                 }
             }
