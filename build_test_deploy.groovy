@@ -22,9 +22,13 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') { 
+        stage('Push image to DockerHub') { 
             steps {
-                sh("echo deploy") 
+                script {
+                    withDockerRegistry(credentialsId: 'dockerhub', url: ''){
+                        dockerImage.push()
+                    }
+                }
             }
         }
     }
