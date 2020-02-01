@@ -3,7 +3,7 @@ pipeline {
         registry = "sukhotin/project_flask_http"
         registryCredential = "dockerhub"
         dockerImage = ""
-        deployment = "project_flask_deployment.yml"
+        deployment = "project-flask.yml"
     }
     agent any 
     stages {
