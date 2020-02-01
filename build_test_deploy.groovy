@@ -6,17 +6,18 @@ pipeline {
     }
     agent any 
     stages {
-        stage('Build') {
+        stage('Build docker image') {
             steps {
                 script {
-                    echo "NODE_NAME = ${env.NODE_NAME}"
-                    dockerImage = docker.build(registry)
+                    dockerImage = docker.build("${registry}:${env.BUILD_ID}")
                 }
             }            
         }
-        stage('Test') { 
+        stage('Test image') { 
             steps {
-                sh("echo test")
+                script {
+                    dockerImage.image(registry).withRun("")
+                }
             }
         }
         stage('Deploy') { 
