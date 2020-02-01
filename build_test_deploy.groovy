@@ -3,6 +3,7 @@ pipeline {
         registry = "sukhotin/project_flask_http"
         registryCredential = "dockerhub"
         dockerImage = ""
+        deployment = "project_flask_deployment.yml"
     }
     agent any 
     stages {
@@ -27,6 +28,14 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub', url: ''){
                         dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Deploy app to K8s') { 
+            steps {
+                script {
+                    sh("kubectl -f ${deployment}")
                     }
                 }
             }
