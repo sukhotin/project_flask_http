@@ -7,9 +7,7 @@ pipeline {
     agent any 
     stages {
         stage('Build') { 
-            steps {
-                dockerImage = docker.build(registry)
-            }
+            dockerImage = docker.build(registry)
         }
         stage('Test') { 
             steps {
