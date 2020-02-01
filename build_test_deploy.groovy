@@ -35,8 +35,7 @@ pipeline {
         stage('Deploy app to K8s') { 
             steps {
                 script {
-                    sh("kubectl -f ${deployment}")
-                    }
+                    sh("kubectl apply -f ${deployment}")
                 }
             }
         }
