@@ -9,6 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    echo "NODE_NAME = ${env.NODE_NAME}"
                     dockerImage = docker.build(registry)
                 }
             }            
