@@ -2,9 +2,10 @@ pipeline {
     environment {
         registry = "sukhotin/project_flask_http"
         registryCredential = "dockerhub"
-        dockerImage = ""
         deployment = "project-flask.yml"
-        dnsName = ""
+        dockerImage = ""
+        get_dns_name_script = "aws elb describe-load-balancers --region us-east-1 --query 'LoadBalancerDescriptions[*].DNSName' --output text"      
+        dns_name = ""
     }
     agent any 
     stages {
@@ -43,8 +44,8 @@ pipeline {
         stage("Wait for load balanser"){
             steps {
                 script {
-                   dnsName = sh(returnStdout: true, script: 'aws elb describe-load-balancers --region us-east-1 --query "LoadBalancerDescriptions[*].DNSName" --output text')
-                   sh "echo ${dnsName}"
+                   dns_name = sh(returnStdout: true, script: "${ get_dns_name_script }" )
+                   sh("while ! nc -z ${dns_name} 80 </dev/null; do sleep 10; done") 
                 }
             }
         }
