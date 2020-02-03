@@ -4,17 +4,18 @@ pipeline {
         registryCredential = "dockerhub"
         dockerImage = ""
         deployment = "project-flask.yml"
+        dnsName = ""
     }
     agent any 
     stages {
-        stage('Build docker image') {
+        stage("Build a docker image") {
             steps {
                 script {
                     dockerImage = docker.build(registry)
                 }
             }            
         }
-        stage('Test image') { 
+        stage("Test the image") { 
             steps {
                 script {
                     docker.image(registry).withRun('-p 8080:5000') {c ->
@@ -23,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage('Push image to DockerHub') { 
+        stage("Push the image to DockerHub") { 
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub', url: ''){
@@ -32,10 +33,18 @@ pipeline {
                 }
             }
         }
-        stage('Deploy app to K8s') { 
+        stage("Deploy the app image to K8s") { 
             steps {
                 script {
-                    sh("kubectl apply -f ${deployment}")
+                    sh "kubectl apply -f ${deployment}"
+                }
+            }
+        }
+        stage("Wait for load balanser"){
+            steps {
+                script {
+                   dnsName = sh(returnStdout: true, script: 'aws elb describe-load-balancers --region us-east-1 --query "LoadBalancerDescriptions[*].DNSName" --output text')
+                   sh "echo ${dnsName}"
                 }
             }
         }
