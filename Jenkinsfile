@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                    dns_name = sh(returnStdout: true, script: "${ get_dns_name_script }" )
-                   sh("while ! nc -z ${dns_name} 80 </dev/null; do sleep 10; done") 
+                   sh("while ! nc -zv ${dns_name} 80; do sleep 10; done") 
                 }
             }
         }
