@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                    dns_name = sh(returnStdout: true, script: "${ get_dns_name_script }" )
-                   sh("while ! nc -zv ${dns_name} 80; do sleep 10; done") 
+                   sh "until $(curl --output /dev/null --head --fail http://${ dns_name }); do printf 'Wait for responce...'; sleep 5; done"
                 }
             }
         }
