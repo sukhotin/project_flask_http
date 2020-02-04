@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hey, we have Flask in a Docker container!'
+    return '<html><body style="background:black"><h1 style="color:orange">Welcome to OpsSchool Project Page</h1></html>'
 
 
 @app.route('/goaway')
