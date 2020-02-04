@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     docker.image(registry).withRun('-p 8080:5000') {c ->
-                        sh "until \$(curl --output /dev/null --head --fail http://localhost:8080; do printf 'Wait for responce...'; sleep 5; done"
+                        sh "until \$(curl --output /dev/null --head --fail http://localhost:8080); do printf 'Wait for responce...'; sleep 5; done"
                     }
                 }
             }
