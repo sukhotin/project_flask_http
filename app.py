@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return '<html><body style="background:black"><h1 style="color:orange">Welcome to OpsSchool Project Page</h1></html>'
+    return '<h1>Hello!</h1>'
 
 
 @app.route('/goaway')
