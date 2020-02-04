@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: flask
-        image: sukhotin/project_flask_http:latest
+        image: sukhotin/project_flask_http
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
