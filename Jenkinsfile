@@ -44,6 +44,7 @@ pipeline {
         stage("Wait for load balanser"){
             steps {
                 script {
+                   sh "sleep 10"
                    dns_name = sh(returnStdout: true, script: "${ get_dns_name_script }" )
                    sh "until \$(curl --output /dev/null --head --fail http://${ dns_name }); do printf 'Wait for responce...'; sleep 5; done"
                 }
