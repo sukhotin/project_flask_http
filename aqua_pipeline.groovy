@@ -33,15 +33,15 @@ node () {
         sh 'echo "Test successful and passed"'
     }
  
-    stage('Push image') {
-        /* Finally, we'll push the image with two tags:
-         * First, the incremental build number from Jenkins
-         * Second, the 'latest' tag.
-         * Pushing multiple tags is cheap, as all the layers are reused. */
-         docker.withRegistry('', registry_credential) {
-            app.push("acsp")
+    // stage('Push image') {
+    //     /* Finally, we'll push the image with two tags:
+    //      * First, the incremental build number from Jenkins
+    //      * Second, the 'latest' tag.
+    //      * Pushing multiple tags is cheap, as all the layers are reused. */
+    //      docker.withRegistry('', registry_credential) {
+    //         app.push("acsp")
             
-        } 
-        sh 'echo "Image successfully pushed to the registry"'
-    }  
+    //     } 
+    //     sh 'echo "Image successfully pushed to the registry"'
+    // }  
 }
