@@ -14,9 +14,10 @@ node () {
     //     app = docker.build(docker_registry)
     // }
     stage("Pull Image") {
-
-        myImage = docker.image(docker_registry)
-        myImage.pull()
+       docker.withRegistry('', 'dockerhub') {
+          myImage = docker.image(docker_registry)
+          myImage.pull()
+       }        
     }
     stage('Aqua CSP Scanner') {
         /* This step scans the image for high vulnerabilities and
