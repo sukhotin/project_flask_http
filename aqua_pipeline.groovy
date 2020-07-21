@@ -1,6 +1,6 @@
 node () {
     def app
-    def docker_registry = "sukhotin/project_flask_http"
+    def docker_image = ""
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
  
@@ -10,17 +10,23 @@ node () {
     // stage('Build image') {
     //     /* This builds the actual image; synonymous to
     //      * docker build on the command line */ 
-    //     app = docker.build(docker_registry)
+    //     app = docker.build(docker_image)
+    // }
+    // docker.withRegistry('https://registry.example.com') {
+
+    //     docker.image(docker_image).inside {
+    //         sh 'make test'
+    //     }
     // }
     stage("Pull Image") {
-          myImage = docker.image(docker_registry)
+          myImage = docker.image(docker_image)
           myImage.pull()       
     }
     stage('Aqua CSP Scanner') {
         /* This step scans the image for high vulnerabilities and
          * FAILS if any are found */
  
-        aqua customFlags: '--layer-vulnerabilities', hideBase: false, hostedImage: '', localImage: docker_registry, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, registry: 'Docker Hub', showNegligible: true
+        aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, registry: 'Docker Hub', showNegligible: true
     }
  
     stage('Test image') {
@@ -33,15 +39,4 @@ node () {
         sh 'echo "Test successful and passed"'
     }
  
-    // stage('Push image') {
-    //     /* Finally, we'll push the image with two tags:
-    //      * First, the incremental build number from Jenkins
-    //      * Second, the 'latest' tag.
-    //      * Pushing multiple tags is cheap, as all the layers are reused. */
-    //      docker.withRegistry('', registry_credential) {
-    //         app.push("acsp")
-            
-    //     } 
-    //     sh 'echo "Image successfully pushed to the registry"'
-    // }  
 }
