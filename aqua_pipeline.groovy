@@ -1,6 +1,6 @@
 node () {
     def app
-    def docker_image = ""
+    def docker_image = "sukhotin/project_flask_http"
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
  
