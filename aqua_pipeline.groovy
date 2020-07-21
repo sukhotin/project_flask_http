@@ -1,7 +1,6 @@
 node () {
     def app
     def docker_registry = "sukhotin/project_flask_http"
-    def registry_credential = "dockerhub"
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -9,13 +8,16 @@ node () {
         checkout scm
     }
  
-    stage('Build image') {
-        /* This builds the actual image; synonymous to
-         * docker build on the command line */
- 
-        app = docker.build(docker_registry)
+    // stage('Build image') {
+    //     /* This builds the actual image; synonymous to
+    //      * docker build on the command line */ 
+    //     app = docker.build(docker_registry)
+    // }
+    stage("Pull Image") {
+
+        myImage = docker.image(docker_registry)
+        myImage.pull()
     }
- 
     stage('Aqua CSP Scanner') {
         /* This step scans the image for high vulnerabilities and
          * FAILS if any are found */
