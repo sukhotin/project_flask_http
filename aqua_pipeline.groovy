@@ -1,5 +1,7 @@
 node () {
     def app
+    def aqua_registry = "https://registry.aquasec.com"
+    def aqua_registry_creds = "aqua_registry"
     def docker_image = "sukhotin/project_flask_http"
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -25,8 +27,9 @@ node () {
     stage('Aqua CSP Scanner') {
         /* This step scans the image for high vulnerabilities and
          * FAILS if any are found */
- 
-        aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, registry: 'Docker Hub', showNegligible: true
+          docker.withRegistry(aqua_registry, aqua_registry_creds) {
+              aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, showNegligible: true
+          }        
     }
  
     stage('Test image') {
