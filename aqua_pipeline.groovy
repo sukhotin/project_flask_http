@@ -28,8 +28,10 @@ node () {
         /* This step scans the image for high vulnerabilities and
          * FAILS if any are found */
           docker.withRegistry(aqua_registry, aqua_registry_creds) {
-              aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, showNegligible: true
-          }        
+             scanner = docker.image(aqua_scanner_image)
+             scanner.pull()   
+          } 
+          aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, showNegligible: true       
     }
  
     stage('Test image') {
