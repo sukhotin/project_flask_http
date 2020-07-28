@@ -21,17 +21,20 @@ node () {
     //     }
     // }
     stage("Pull Image") {
-          myImage = docker.image(docker_image)
-          myImage.pull()       
+        myImage = docker.image(docker_image)
+        myImage.pull()       
+    }
+    stage("Pull Aqua scanner image"){
+        docker.withRegistry(aqua_registry, aqua_registry_creds) {
+           scanner = docker.image(aqua_scanner_image)
+           scanner.pull()   
+        } 
     }
     stage('Aqua CSP Scanner') {
         /* This step scans the image for high vulnerabilities and
          * FAILS if any are found */
-          docker.withRegistry(aqua_registry, aqua_registry_creds) {
-             scanner = docker.image(aqua_scanner_image)
-             scanner.pull()   
-          } 
-          aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, showNegligible: true       
+
+        aqua customFlags: '--layer-vulnerabilities -D', hideBase: false, hostedImage: '', localImage: docker_image, locationType: 'local', notCompliesCmd: '', onDisallowed: 'fail', policies: '', register: true, showNegligible: true       
     }
  
     stage('Test image') {
