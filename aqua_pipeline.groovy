@@ -2,10 +2,10 @@ node () {
     def app
     def aqua_registry = "https://registry.aquasec.com"
     def aqua_registry_creds = "aqua_registry"
+    def aqua_scanner_image = "registry.aquasec.com/scanner:4.6"
     def docker_image = "sukhotin/project_flask_http"
     stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
- 
+        /* Let's make sure we have the repository cloned to our workspace */ 
         checkout scm
     }
  
